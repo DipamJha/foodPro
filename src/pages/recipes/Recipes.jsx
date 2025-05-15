@@ -1,28 +1,24 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './recipes.css';
-// import BarcodeScanner from './scanner/scanner';
-// import BarcodeScanner from './pages/scanner/Scanner.tsx';
-
 import BarcodeScanner from '../scanner/Scanner.tsx';
-import { useNavigate } from 'react-router-dom'; // 🔥 import this
-import './recipes.css';
-
-
-
-
-
- // adjust path if needed
+import { useNavigate } from 'react-router-dom';
 
 const Recipes = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState('');
   const [scannedBarcode, setScannedBarcode] = useState('');
-  const navigate = useNavigate(); // ✅ Add this here
+  const navigate = useNavigate();
 
   const fetchProductDetails = async (barcode) => {
     try {
-      const response = await axios.get(`https://world.openfoodfacts.net/api/v2/product/${barcode}`);
+      // Using a proxy URL to avoid SSL certificate issues
+      const response = await axios.get(`https://openfoodfacts.org/api/v2/product/${barcode}`, {
+        headers: {
+          'User-Agent': 'FoodScan - React Web App',
+        }
+      });
+      
       if (response.data && response.data.product) {
         setProduct(response.data.product);
         setError('');
@@ -33,17 +29,16 @@ const Recipes = () => {
     } catch (err) {
       console.error('Fetch error:', err);
       setProduct(null);
-      setError('Failed to fetch product.');
+      setError('Failed to fetch product. Please try scanning again.');
     }
   };
 
-  // Called when BarcodeScanner detects a code
   const handleBarcodeDetected = (barcode) => {
     setScannedBarcode(barcode);
     fetchProductDetails(barcode);
   };
   
-  const handleAnalyze = () => { // ✅ Define your missing function
+  const handleAnalyze = () => {
     if (!product) return;
     navigate('/chatbot', { state: { product } });
   };
@@ -80,18 +75,17 @@ const Recipes = () => {
                 <tr><td><strong>Categories:</strong> {product.categories}</td></tr>
                 <tr><td><strong>Nutrition Grade:</strong> {product.nutrition_grades}</td></tr>
                 <tr><td><img src={product.image_url} alt={product.product_name} width="120" /></td></tr>
-                <button className="analyze-btn" onClick={handleAnalyze}>
-        🔍 Analyze
-      </button>
+                <tr><td>
+                  <button className="analyze-btn" onClick={handleAnalyze}>
+                    🔍 Analyze
+                  </button>
+                </td></tr>
               </>
             ) : (
               <tr><td>{error || 'Upload an image to scan a barcode.'}</td></tr>
             )}
           </tbody>
         </table>
-        {/* <button className="analyze-btn" onClick={handleAnalyze}>
-                      🔍 Analyze
-                    </button> */}
       </div>
     </div>
   );
