@@ -12,9 +12,9 @@ const Recipes = () => {
 
   const fetchProductDetails = async (barcode) => {
     try {
-      const response = await axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}`, {
+      const response = await axios.get(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/product-info?barcode=${barcode}`, {
         headers: {
-          'User-Agent': 'FoodScan - React Web App',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         timeout: 10000, // 10 second timeout
       });
