@@ -1,0 +1,50 @@
+*, *::before, *::after {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-secondary: #F8D3A3;
+  --container-width-lg: 80%;
+  --container-width-md: 90%;
+  --transition: all 500ms ease;
+}
+
+body {
+  background-color: #E3AE85;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  line-height: 1.7;
+  
+}
+
+.container {
+  width: var(--container-width-lg);
+  max-width: 1920px;
+  margin-inline: auto;
+}
+
+h1, h2, h3, h4, h6 {
+  line-height: 1.2;
+  color: var(white);
+}
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 3rem;
+}
+a {
+  color: white;
+}
+
+p {
+  color: white;
+}
+
+
