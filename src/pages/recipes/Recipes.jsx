@@ -12,11 +12,11 @@ const Recipes = () => {
 
   const fetchProductDetails = async (barcode) => {
     try {
-      // Using a proxy URL to avoid SSL certificate issues
-      const response = await axios.get(`https://openfoodfacts.org/api/v2/product/${barcode}`, {
+      const response = await axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}`, {
         headers: {
           'User-Agent': 'FoodScan - React Web App',
-        }
+        },
+        timeout: 10000, // 10 second timeout
       });
       
       if (response.data && response.data.product) {
@@ -24,12 +24,20 @@ const Recipes = () => {
         setError('');
       } else {
         setProduct(null);
-        setError('Product not found.');
+        setError('Product not found in the database.');
       }
     } catch (err) {
       console.error('Fetch error:', err);
       setProduct(null);
-      setError('Failed to fetch product. Please try scanning again.');
+      
+      // More specific error messages based on the error type
+      if (err.code === 'ECONNABORTED') {
+        setError('Request timed out. Please check your internet connection and try again.');
+      } else if (err.message === 'Network Error') {
+        setError('Network error. Please check your internet connection and try again.');
+      } else {
+        setError('Failed to fetch product details. Please try scanning again.');
+      }
     }
   };
 

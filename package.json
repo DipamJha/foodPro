@@ -8,7 +8,7 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
     "@reduxjs/toolkit": "^1.9.5",
-    "@zxing/browser": "^0.1.5",
+    "@zxing/browser": "^0.1.4",
     "axios": "^1.4.0",
     "chart.js": "^4.3.3",
     "react": "^18.2.0",
@@ -22,11 +22,11 @@
     "react-webcam": "^7.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "react-scripts start"
+    "dev": "GENERATE_SOURCEMAP=false react-scripts start"
   },
   "eslintConfig": {
     "extends": [
